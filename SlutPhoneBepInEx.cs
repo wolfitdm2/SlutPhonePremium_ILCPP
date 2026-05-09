@@ -410,6 +410,11 @@ namespace SlutPhoneBepInEx_IL2CPP
         private static SecondaryApps secondaryAppsInstance = null;
         public static void SecondaryApps_Start(SecondaryApps __instance)
         {
+            if (!activateCheats)
+            {
+                return;
+            }
+
             if (secondaryAppsInstance == null)
             {
                 secondaryAppsInstance = __instance;
@@ -419,6 +424,11 @@ namespace SlutPhoneBepInEx_IL2CPP
         }
         public static bool SecondaryApps_DisplayChoices(List<Choice> choices, SecondaryApps __instance) {
             
+            if (!activateCheats)
+            {
+                return true;
+            }
+
             if (secondaryAppsInstance == null)
             {
                 secondaryAppsInstance = __instance;
@@ -430,6 +440,11 @@ namespace SlutPhoneBepInEx_IL2CPP
         }
         public static void SecondaryApps_DisplayChoices_Postfix(List<Choice> choices, SecondaryApps __instance)
         {
+            if (!activateCheats)
+            {
+                return;
+            }
+
             setChoices(choices);
         }
 
@@ -457,6 +472,11 @@ namespace SlutPhoneBepInEx_IL2CPP
         }
         public static bool ChatManager_DisplayChoices(List<Choice> choices, string chat, int mainID, object __instance)
         {
+            if (!activateCheats)
+            {
+                return true;
+            }
+
             setChoices(choices);
 
             ChatManager _this = (ChatManager)__instance;
@@ -501,11 +521,29 @@ namespace SlutPhoneBepInEx_IL2CPP
         }
         public static void ChatManager_DisplayChoices_Postfix(List<Choice> choices, string chat, int mainID, object __instance)
         {
+            if (!activateCheats)
+            {
+                return;
+            }
+
             setChoices(choices);
         }
+
+        private static bool activateCheats = false;
         public static bool MainGame_Update(object __instance)
         {
             MainGame _this = (MainGame)__instance;
+
+            if (Input.GetKeyUp(KeyCode.Alpha0))
+            {
+                Logger.LogInfo("Cheats Activated!!!!");
+                activateCheats = true;
+            }
+
+            if (!activateCheats)
+            {
+                return true;
+            }
 
             if (Input.GetKeyUp(KeyCodeG))
             {
